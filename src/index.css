@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  --color-brand-black: #000000;
+  --color-brand-white: #FFFFFF;
+  --color-brand-blue: #1E3A8A;
+  --color-brand-green: #2E7D32;
+  --color-brand-gray: #111111;
+  --color-brand-light-gray: #F5F5F5;
+  
+  --color-accent-blue: #3B82F6;
+  --color-accent-green: #10B981;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-brand-black text-brand-white font-sans antialiased selection:bg-brand-white selection:text-brand-black;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-normal tracking-tight;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-black/30 backdrop-blur-md;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
