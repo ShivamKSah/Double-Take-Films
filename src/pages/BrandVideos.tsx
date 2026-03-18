@@ -1,31 +1,110 @@
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, X, Play } from "lucide-react";
-import { Fragment, useState, useRef, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  resolveDriveEmbedUrl,
+  resolveDriveMediaUrl,
+  resolveDrivePosterUrl,
+  useVideoThumbnail,
+} from "../lib/videoThumbnails";
 
 const videos = [
-  { file: "FLIGHT.mp4", label: "FLIGHT", previewTime: 2 },
-  { file: "gabe.mp4", label: "Gabe", previewTime: 2 },
-  { file: "Gabe2.mp4", label: "Gabe2", previewTime: 2 },
-  { file: "HES.h264.mp4", label: "HES", previewTime: 8, poster: "/brand-thumbnails/HES.png" },
-  { file: "HomeX.mp4", label: "HomeX", previewTime: 2 },
-  { file: "HomeX (1).mp4", label: "HomeX (1)", previewTime: 2 },
-  { file: "HomeX (2).mp4", label: "HomeX (2)", previewTime: 2 },
-  { file: "HomeX (3).mp4", label: "HomeX (3)", previewTime: 2 },
-  { file: "jdm.mp4", label: "JDM", previewTime: 8 },
-  { file: "kl.mp4", label: "KL", previewTime: 8 },
-  { file: "Lugos.mp4", label: "Lugos", previewTime: 2 },
-  { file: "Lugos (1).mp4", label: "Lugos (1)", previewTime: 8 },
-  { file: "Primary.mp4", label: "Primary", previewTime: 2 },
-  { file: "re-color.mp4", label: "Re-Color", previewTime: 2 },
+  {
+    file: "FLIGHT.mp4",
+    label: "FLIGHT",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1PTJbED0F5NLPJH8TVF8HWA4HfLSj9hmP/view?usp=sharing",
+  },
+  {
+    file: "gabe.mp4",
+    label: "Gabe",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1IkooLTcZlS5dD_OjulhTZ9ERBUMLbY77/view?usp=sharing",
+  },
+  {
+    file: "Gabe2.mp4",
+    label: "Gabe2",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1oM8pJa2fr8siOj12xKnju-v4abqybCu6/view?usp=sharing",
+  },
+  {
+    file: "HES.mp4",
+    label: "HES",
+    previewTime: 8,
+    url: "https://drive.google.com/file/d/1sLoFgoRqZBTl95tV30_15NUFx9Po2a0q/view?usp=sharing",
+    poster: "/brand-thumbnails/HES.png",
+  },
+  {
+    file: "HomeX (1).mp4",
+    label: "HomeX (1)",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1viEgWqE_loaaKPGTD0b7G2MA67tekWum/view?usp=sharing",
+  },
+  {
+    file: "HomeX (2).mp4",
+    label: "HomeX (2)",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1eCWyF1F7g0KaWajikru7XHpQBtNOWWdj/view?usp=sharing",
+  },
+  {
+    file: "HomeX (3).mp4",
+    label: "HomeX (3)",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/17HKHrkWo5FbN_EM1-LjxPK1NppaPhUzQ/view?usp=sharing",
+  },
+  {
+    file: "HomeX.mp4",
+    label: "HomeX",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1HSq3qvNRS9ZzNs9Bb9i_ftkJpGiPp-Uw/view?usp=sharing",
+  },
+  {
+    file: "jdm.mp4",
+    label: "JDM",
+    previewTime: 8,
+    url: "https://drive.google.com/file/d/16vwbof85Z6nKubs5DDSMh44-lYv19M9X/view?usp=sharing",
+  },
+  {
+    file: "kl.mp4",
+    label: "KL",
+    previewTime: 8,
+    url: "https://drive.google.com/file/d/1Vo17Fq_-rRDY9KVIvKkW2-1J4-uOfzjs/view?usp=sharing",
+  },
+  {
+    file: "Lugos (1).mp4",
+    label: "Lugos (1)",
+    previewTime: 8,
+    url: "https://drive.google.com/file/d/1973sgn8XI-5vB-S914hw1b0Rnc_QGpml/view?usp=sharing",
+  },
+  {
+    file: "Lugos.mp4",
+    label: "Lugos",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1FHHqzpVCDm6RaEfCg-_yBf2-0kh79kXX/view?usp=sharing",
+  },
+  {
+    file: "Primary.mp4",
+    label: "Primary",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/18HisolNQNxHYEIWbC-wQUfDXFosPUWUh/view?usp=sharing",
+  },
+  {
+    file: "re-color.mp4",
+    label: "Re-Color",
+    previewTime: 2,
+    url: "https://drive.google.com/file/d/1oT3HotNqLLIWLrqM4B8pw0z8ZsW9IO8V/view?usp=sharing",
+  },
 ];
 
-function videoUrl(file: string) {
-  return `/brand-videos/${encodeURIComponent(file)}`;
+function createFallbackPoster(label: string) {
+  const safeLabel = label.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#18181b"/><stop offset="100%" stop-color="#27272a"/></linearGradient></defs><rect width="1280" height="720" fill="url(#g)"/><circle cx="640" cy="360" r="58" fill="#ffffff22" stroke="#ffffff55" stroke-width="2"/><polygon points="628,334 628,386 674,360" fill="#ffffff"/><text x="640" y="624" text-anchor="middle" fill="#f4f4f5" font-size="44" font-family="Georgia, serif">${safeLabel}</text><text x="640" y="664" text-anchor="middle" fill="#a1a1aa" font-size="26" font-family="Arial, sans-serif">Brand Video</text></svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
 interface VideoModalProps {
-  video: { file: string; label: string } | null;
+  video: { file: string; label: string; url: string } | null;
   onClose: () => void;
 }
 
@@ -36,30 +115,13 @@ interface VideoCardProps {
 }
 
 function VideoCard({ video, index, onOpen }: VideoCardProps) {
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
-  const [isHovering, setIsHovering] = useState(false);
-  const posterSrc = video.poster ?? thumbnail;
-
-  const captureThumbnail = (element: HTMLVideoElement) => {
-    if (thumbnail || element.videoWidth === 0 || element.videoHeight === 0) {
-      return;
-    }
-
-    const canvas = document.createElement("canvas");
-    canvas.width = element.videoWidth;
-    canvas.height = element.videoHeight;
-
-    const context = canvas.getContext("2d");
-    if (!context) {
-      return;
-    }
-
-    try {
-      context.drawImage(element, 0, 0, canvas.width, canvas.height);
-      setThumbnail(canvas.toDataURL("image/jpeg", 0.85));
-    } catch {
-    }
-  };
+  const fallbackPoster = createFallbackPoster(video.label);
+  const fallbackSrc = video.poster ?? resolveDrivePosterUrl(video.url) ?? fallbackPoster;
+  const posterSrc = useVideoThumbnail({
+    videoUrl: resolveDriveMediaUrl(video.url),
+    fallbackSrc,
+    seekTime: video.previewTime,
+  }) ?? fallbackSrc;
 
   return (
     <motion.div
@@ -71,62 +133,15 @@ function VideoCard({ video, index, onOpen }: VideoCardProps) {
       className="group cursor-pointer"
     >
       <div className="relative aspect-video bg-white/5 rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-2xl hover:shadow-black/60">
-        <video
-          className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity transition-transform duration-700 group-hover:scale-105 transform"
-          preload="auto"
-          muted
-          playsInline
-          onLoadedMetadata={(e) => {
-            const v = e.currentTarget;
-            if (Number.isFinite(v.duration) && v.duration > 0.5) {
-              const targetTime = Math.min(video.previewTime, Math.max(v.duration - 0.25, 0));
-              try {
-                v.currentTime = targetTime;
-              } catch {
-              }
-            }
-          }}
-          onSeeked={(e) => {
-            captureThumbnail(e.currentTarget);
-          }}
-          onLoadedData={(e) => {
-            captureThumbnail(e.currentTarget);
-          }}
-          onMouseEnter={(e) => {
-            const v = e.currentTarget;
-            setIsHovering(true);
-            if (Number.isFinite(v.duration) && v.duration > 0.5 && v.currentTime < 0.1) {
-              const targetTime = Math.min(video.previewTime, Math.max(v.duration - 0.25, 0));
-              try {
-                v.currentTime = targetTime;
-              } catch {
-              }
-            }
-            v.play().catch(() => {});
-          }}
-          onMouseLeave={(e) => {
-            const v = e.currentTarget;
-            setIsHovering(false);
-            v.pause();
-            if (v.readyState >= 1) {
-              const targetTime = Number.isFinite(v.duration) && v.duration > 0.5
-                ? Math.min(video.previewTime, Math.max(v.duration - 0.25, 0))
-                : 0;
-              try {
-                v.currentTime = targetTime;
-              } catch {
-              }
-            }
-          }}
-        >
-          <source src={videoUrl(video.file)} type="video/mp4" />
-        </video>
-
-        {posterSrc && !isHovering && (
+        {posterSrc && (
           <img
             src={posterSrc}
             alt={`${video.label} thumbnail`}
-            className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = fallbackPoster;
+            }}
           />
         )}
 
@@ -152,14 +167,6 @@ function VideoCard({ video, index, onOpen }: VideoCardProps) {
 }
 
 function VideoModal({ video, onClose }: VideoModalProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (video && videoRef.current) {
-      videoRef.current.load();
-    }
-  }, [video]);
-
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -198,16 +205,14 @@ function VideoModal({ video, onClose }: VideoModalProps) {
             </div>
 
             <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl">
-              <video
-                ref={videoRef}
-                controls
-                autoPlay
-                className="w-full max-h-[75vh] outline-none"
-                preload="metadata"
-              >
-                <source src={videoUrl(video.file)} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <iframe
+                key={video.file}
+                src={resolveDriveEmbedUrl(video.url)}
+                className="w-full h-[75vh] outline-none"
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+                title={video.label}
+              />
             </div>
           </motion.div>
         </motion.div>

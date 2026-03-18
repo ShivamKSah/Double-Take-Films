@@ -1,47 +1,148 @@
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, X, Play } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import type { FC } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  resolveDriveEmbedUrl,
+  resolveDriveMediaUrl,
+  resolveDrivePosterUrl,
+  useVideoThumbnail,
+} from "../lib/videoThumbnails";
 
 const videos = [
-  { file: "CO.mp4", label: "CO" },
-  { file: "FLIGHT.mp4", label: "FLIGHT" },
   {
-    file: "Kelly Adrian Interview.h264.mp4",
-    label: "Kelly Adrian Interview",
-    poster: "/capture-thumbnails/kelly-adrian-interview.png",
+    file: "CO.mp4",
+    label: "CO",
+    url: "https://drive.google.com/file/d/1UG9hWk65GzHkK4L2Uq9NM2dYAC-jZIqo/view?usp=sharing",
   },
   {
-    file: "Kelly Dalton Interview.h264.mp4",
-    label: "Kelly Dalton Interview",
+    file: "FLIGHT.mp4",
+    label: "FLIGHT",
+    url: "https://drive.google.com/file/d/10_K_41nk2aiibkHyG--fOT5teMMhEhdy/view?usp=sharing",
+  },
+  {
+    file: "Kelly Adrian Interview.mp4",
+    label: "Kelly Adrian Interview",
+    url: "https://drive.google.com/file/d/1FvnwdTU8mnVNPs5ukE9fSM1HUF0KeO1z/view?usp=sharing",
     poster: "/capture-thumbnails/kelly-dalton-interview.png",
   },
-  { file: "Kelly Stage Talk.h264.mp4", label: "Kelly Stage Talk" },
-  { file: "Kelly Summit Hype.h264.mp4", label: "Kelly Summit Hype" },
-  { file: "ky.mp4", label: "KY" },
-  { file: "thai.mp4", label: "Thai" },
-  { file: "tourney.mp4", label: "Tourney" },
-  { file: "wedding.mp4", label: "Wedding" },
+  {
+    file: "Kelly Dalton Interview.mp4",
+    label: "Kelly Dalton Interview",
+    url: "https://drive.google.com/file/d/1DFZPtoA496eJW-XDopy1sAxzXgoXmpqh/view?usp=sharing",
+    poster: "/capture-thumbnails/kelly-dalton-interview.png",
+  },
+  {
+    file: "Kelly Stage Talk.mp4",
+    label: "Kelly Stage Talk",
+    url: "https://drive.google.com/file/d/1RcZdX0H_H2gYLzrbRNnqzHRw7kll2frv/view?usp=sharing",
+  },
+  {
+    file: "Kelly Summit Hype.mp4",
+    label: "Kelly Summit Hype",
+    url: "https://drive.google.com/file/d/1aWx08QMzpb9p4sq0vMyrHUwZ4WXst_Ho/view?usp=sharing",
+  },
+  {
+    file: "ky.mp4",
+    label: "KY",
+    url: "https://drive.google.com/file/d/11cJKXokE7jXimQhQTyBIgOZ07SiSS4Fa/view?usp=sharing",
+  },
+  {
+    file: "thai.mp4",
+    label: "Thai",
+    url: "https://drive.google.com/file/d/1ZshVcl_qh56VtObEhqscyvhuEwhQdlaA/view?usp=sharing",
+  },
+  {
+    file: "tourney.mp4",
+    label: "Tourney",
+    url: "https://drive.google.com/file/d/1U-PNexinuidbFdIynYVxQq7NE1jMhFHD/view?usp=sharing",
+  },
+  {
+    file: "wedding.mp4",
+    label: "Wedding",
+    url: "https://drive.google.com/file/d/1cTskHY1mahOpsixpGIn7ZEUE_LgfZxvk/view?usp=sharing",
+  },
 ];
 
-function videoUrl(file: string) {
-  return `/capture-videos/${encodeURIComponent(file)}`;
+function createFallbackPoster(label: string) {
+  const safeLabel = label.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#18181b"/><stop offset="100%" stop-color="#27272a"/></linearGradient></defs><rect width="1280" height="720" fill="url(#g)"/><circle cx="640" cy="360" r="58" fill="#ffffff22" stroke="#ffffff55" stroke-width="2"/><polygon points="628,334 628,386 674,360" fill="#ffffff"/><text x="640" y="624" text-anchor="middle" fill="#f4f4f5" font-size="44" font-family="Georgia, serif">${safeLabel}</text><text x="640" y="664" text-anchor="middle" fill="#a1a1aa" font-size="26" font-family="Arial, sans-serif">Creative Project</text></svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
 interface VideoModalProps {
-  video: { file: string; label: string } | null;
+  video: { file: string; label: string; url: string } | null;
   onClose: () => void;
 }
 
+interface VideoCardProps {
+  video: (typeof videos)[0];
+  index: number;
+  onOpen: (video: (typeof videos)[0]) => void;
+}
+
+const VideoCard: FC<VideoCardProps> = ({ video, index, onOpen }) => {
+  const fallbackPoster = createFallbackPoster(video.label);
+  const fallbackSrc = video.poster ?? resolveDrivePosterUrl(video.url) ?? fallbackPoster;
+  const posterSrc = useVideoThumbnail({
+    videoUrl: resolveDriveMediaUrl(video.url),
+    fallbackSrc,
+    seekTime: 2,
+  }) ?? fallbackSrc;
+
+  return (
+    <motion.div
+      key={video.file}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.05 }}
+      onClick={() => onOpen(video)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onOpen(video);
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      className="group cursor-pointer rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-black"
+    >
+      <div className="relative aspect-video bg-white/5 rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-2xl hover:shadow-black/60">
+        {posterSrc && (
+          <img
+            src={posterSrc}
+            alt={`${video.label} thumbnail`}
+            className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = fallbackPoster;
+            }}
+          />
+        )}
+
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center group-hover:bg-white/20 group-hover:scale-110 transition-all duration-300 shadow-lg">
+            <Play size={20} className="ml-1 text-white" fill="white" />
+          </div>
+        </div>
+
+        <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm rounded-full px-2 py-0.5 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity">
+          MP4
+        </div>
+      </div>
+
+      <div className="mt-4 px-1">
+        <h3 className="font-serif text-lg text-white group-hover:text-white/80 transition-colors">
+          {video.label}
+        </h3>
+        <p className="text-white/40 text-sm mt-1">Creative Project</p>
+      </div>
+    </motion.div>
+  );
+};
+
 function VideoModal({ video, onClose }: VideoModalProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (video && videoRef.current) {
-      videoRef.current.load();
-    }
-  }, [video]);
-
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -82,16 +183,14 @@ function VideoModal({ video, onClose }: VideoModalProps) {
             </div>
 
             <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl">
-              <video
-                ref={videoRef}
-                controls
-                autoPlay
-                className="w-full max-h-[75vh] outline-none"
-                preload="metadata"
-              >
-                <source src={videoUrl(video.file)} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <iframe
+                key={video.file}
+                src={resolveDriveEmbedUrl(video.url)}
+                className="w-full h-[75vh] outline-none"
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+                title={video.label}
+              />
             </div>
           </motion.div>
         </motion.div>
@@ -139,65 +238,12 @@ export default function CreativeProjects() {
       <section className="container mx-auto px-6 md:px-12 pb-32">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {videos.map((video, index) => (
-            <motion.div
+            <VideoCard
               key={video.file}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.05 }}
-              onClick={() => setActiveVideo(video)}
-              className="group cursor-pointer"
-            >
-              <div className="relative aspect-video bg-white/5 rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-2xl hover:shadow-black/60">
-                <video
-                  className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity transition-transform duration-700 group-hover:scale-105 transform"
-                  preload="metadata"
-                  poster={video.poster}
-                  muted
-                  playsInline
-                  onMouseEnter={(e) => {
-                    const v = e.currentTarget;
-                    v.play().catch(() => {});
-                  }}
-                  onMouseLeave={(e) => {
-                    const v = e.currentTarget;
-                    v.pause();
-                    if (v.readyState >= 1) {
-                      try {
-                        v.currentTime = 0;
-                      } catch {
-                      }
-                    }
-                  }}
-                >
-                  <source src={videoUrl(video.file)} type="video/mp4" />
-                </video>
-
-                {video.poster && (
-                  <img
-                    src={video.poster}
-                    alt={`${video.label} thumbnail`}
-                    className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none"
-                  />
-                )}
-
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center group-hover:bg-white/20 group-hover:scale-110 transition-all duration-300 shadow-lg">
-                    <Play size={20} className="ml-1 text-white" fill="white" />
-                  </div>
-                </div>
-
-                <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm rounded-full px-2 py-0.5 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity">
-                  MP4
-                </div>
-              </div>
-
-              <div className="mt-4 px-1">
-                <h3 className="font-serif text-lg text-white group-hover:text-white/80 transition-colors">
-                  {video.label}
-                </h3>
-                <p className="text-white/40 text-sm mt-1">Creative Project</p>
-              </div>
-            </motion.div>
+              video={video}
+              index={index}
+              onOpen={setActiveVideo}
+            />
           ))}
         </div>
       </section>

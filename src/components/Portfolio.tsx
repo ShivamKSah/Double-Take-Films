@@ -1,7 +1,13 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useState, useRef, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { X } from "lucide-react";
 import { cn } from "../lib/utils";
+import {
+  resolveDriveEmbedUrl,
+  resolveDriveMediaUrl,
+  resolveDrivePosterUrl,
+  useVideoThumbnail,
+} from "../lib/videoThumbnails";
 
 type Category = "Wedding Films" | "Business Videos" | "Creative Projects";
 
@@ -9,58 +15,62 @@ interface Project {
   id: string;
   title: string;
   category: Category;
-  file: string;
-  videoBase: string;
+  url: string;
   poster?: string;
 }
 
 const projects: Project[] = [
   // ── Wedding Films ──────────────────────────────────────────────
-  { id: "w-hw",       title: "H&W Wedding",            category: "Wedding Films",    file: "H&W.mp4",                              videoBase: "/wedding-videos/" },
-  { id: "w-j1",       title: "J Wedding (Extended)",   category: "Wedding Films",    file: "J (1).mp4",                            videoBase: "/wedding-videos/" },
-  { id: "w-jk",       title: "J&K Wedding",            category: "Wedding Films",    file: "J&K.mp4",                              videoBase: "/wedding-videos/", poster: "/wedding-thumbnails/j-and-k.png" },
-  { id: "w-j",        title: "J Wedding",              category: "Wedding Films",    file: "J.mp4",                                videoBase: "/wedding-videos/", poster: "/wedding-thumbnails/j.png" },
-  { id: "w-jake",     title: "Jake",                   category: "Wedding Films",    file: "jake.mp4",                             videoBase: "/wedding-videos/" },
-  { id: "w-lover",    title: "Lover",                  category: "Wedding Films",    file: "Lover.mp4",                            videoBase: "/wedding-videos/" },
-  { id: "w-pinner",   title: "Pinner Wedding",         category: "Wedding Films",    file: "Pinner.mp4",                           videoBase: "/wedding-videos/" },
-  { id: "w-pollaed",  title: "Pollaed Wedding",        category: "Wedding Films",    file: "Pollaed.mp4",                          videoBase: "/wedding-videos/" },
-  { id: "w-pollard",  title: "Pollard Wedding",        category: "Wedding Films",    file: "pollard.mp4",                          videoBase: "/wedding-videos/" },
-  { id: "w-posey",    title: "Posey Wedding",          category: "Wedding Films",    file: "Posey.mp4",                            videoBase: "/wedding-videos/", poster: "/wedding-thumbnails/posey.png" },
-  { id: "w-the",      title: "THE Wedding",            category: "Wedding Films",    file: "THE.mp4",                              videoBase: "/wedding-videos/", poster: "/wedding-thumbnails/the.png" },
-  { id: "w-timeline", title: "Timeline",               category: "Wedding Films",    file: "Timeline.mp4",                         videoBase: "/wedding-videos/" },
-  { id: "w-wedding",  title: "Wedding",                category: "Wedding Films",    file: "wedding.mp4",                          videoBase: "/wedding-videos/" },
+  { id: "w-hw",       title: "H&W Wedding",            category: "Wedding Films",    url: "https://drive.google.com/file/d/1BmchTztsAjOodQGvsxkaNFS94gG7IOjL/view?usp=sharing" },
+  { id: "w-j1",       title: "J Wedding (Extended)",   category: "Wedding Films",    url: "https://drive.google.com/file/d/1ilO59ahY_LvMZBalv2pNUeEd51uC1uQc/view?usp=sharing" },
+  { id: "w-jk",       title: "J&K Wedding",            category: "Wedding Films",    url: "https://drive.google.com/file/d/1iQqns4YYZmDTcRL4wCQaqUIvw4YcqDo0/view?usp=sharing", poster: "/wedding-thumbnails/j-and-k.png" },
+  { id: "w-j",        title: "J Wedding",              category: "Wedding Films",    url: "https://drive.google.com/file/d/1si8R8YRmEe3SL9xoDMJ1tPzXt2-IYog0/view?usp=sharing", poster: "/wedding-thumbnails/j.png" },
+  { id: "w-jake",     title: "Jake",                   category: "Wedding Films",    url: "https://drive.google.com/file/d/1XqjffeM8lZsyAgm0utl0uZg8PyWOiPqF/view?usp=sharing" },
+  { id: "w-lover",    title: "Lover",                  category: "Wedding Films",    url: "https://drive.google.com/file/d/1F2aj1e-fKjluVWy3lVqaDNQEbQvHN7B0/view?usp=sharing" },
+  { id: "w-pinner",   title: "Pinner Wedding",         category: "Wedding Films",    url: "https://drive.google.com/file/d/1c02Cn7L0TScEEctIKCBwXnFDrAmcEa2r/view?usp=sharing" },
+  { id: "w-pollard-1", title: "Pollard Wedding (1)",    category: "Wedding Films",    url: "https://drive.google.com/file/d/12VmUr_pI0r4pF8tAJ2MueqQf-waijEOz/view?usp=sharing" },
+  { id: "w-pollard",  title: "Pollard Wedding",        category: "Wedding Films",    url: "https://drive.google.com/file/d/1Gs1sR19U_udDoYkEakg7KKTEr4a9Yqup/view?usp=sharing" },
+  { id: "w-timeline", title: "Timeline",               category: "Wedding Films",    url: "https://drive.google.com/file/d/1RT9ItDrqX_nun8NpAc2QmsIQuAtPtQMO/view?usp=sharing" },
+  { id: "w-wedding",  title: "Wedding",                category: "Wedding Films",    url: "https://drive.google.com/file/d/1kh0qT4ZY3DPNA6V_mFYJqEia64SG86j9/view?usp=sharing" },
 
   // ── Business Videos ────────────────────────────────────────────
-  { id: "b-flight",   title: "FLIGHT",                 category: "Business Videos",  file: "FLIGHT.mp4",                           videoBase: "/brand-videos/" },
-  { id: "b-gabe",     title: "Gabe",                   category: "Business Videos",  file: "gabe.mp4",                             videoBase: "/brand-videos/" },
-  { id: "b-gabe2",    title: "Gabe 2",                 category: "Business Videos",  file: "Gabe2.mp4",                            videoBase: "/brand-videos/" },
-  { id: "b-hes",      title: "HES",                    category: "Business Videos",  file: "HES.h264.mp4",                         videoBase: "/brand-videos/", poster: "/brand-thumbnails/HES.png" },
-  { id: "b-homex",    title: "HomeX",                  category: "Business Videos",  file: "HomeX.mp4",                            videoBase: "/brand-videos/" },
-  { id: "b-homex1",   title: "HomeX (1)",              category: "Business Videos",  file: "HomeX (1).mp4",                        videoBase: "/brand-videos/" },
-  { id: "b-homex2",   title: "HomeX (2)",              category: "Business Videos",  file: "HomeX (2).mp4",                        videoBase: "/brand-videos/" },
-  { id: "b-homex3",   title: "HomeX (3)",              category: "Business Videos",  file: "HomeX (3).mp4",                        videoBase: "/brand-videos/" },
-  { id: "b-jdm",      title: "JDM",                    category: "Business Videos",  file: "jdm.mp4",                              videoBase: "/brand-videos/" },
-  { id: "b-kl",       title: "KL",                     category: "Business Videos",  file: "kl.mp4",                               videoBase: "/brand-videos/" },
-  { id: "b-lugos",    title: "Lugos",                  category: "Business Videos",  file: "Lugos.mp4",                            videoBase: "/brand-videos/" },
-  { id: "b-lugos1",   title: "Lugos (1)",              category: "Business Videos",  file: "Lugos (1).mp4",                        videoBase: "/brand-videos/" },
-  { id: "b-primary",  title: "Primary",                category: "Business Videos",  file: "Primary.mp4",                          videoBase: "/brand-videos/" },
-  { id: "b-recolor",  title: "Re-Color",               category: "Business Videos",  file: "re-color.mp4",                         videoBase: "/brand-videos/" },
+  { id: "b-flight",   title: "FLIGHT",                 category: "Business Videos",  url: "https://drive.google.com/file/d/1PTJbED0F5NLPJH8TVF8HWA4HfLSj9hmP/view?usp=sharing" },
+  { id: "b-gabe",     title: "Gabe",                   category: "Business Videos",  url: "https://drive.google.com/file/d/1IkooLTcZlS5dD_OjulhTZ9ERBUMLbY77/view?usp=sharing" },
+  { id: "b-gabe2",    title: "Gabe2",                  category: "Business Videos",  url: "https://drive.google.com/file/d/1oM8pJa2fr8siOj12xKnju-v4abqybCu6/view?usp=sharing" },
+  { id: "b-hes",      title: "HES",                    category: "Business Videos",  url: "https://drive.google.com/file/d/1sLoFgoRqZBTl95tV30_15NUFx9Po2a0q/view?usp=sharing", poster: "/brand-thumbnails/HES.png" },
+  { id: "b-homex",    title: "HomeX",                  category: "Business Videos",  url: "https://drive.google.com/file/d/1HSq3qvNRS9ZzNs9Bb9i_ftkJpGiPp-Uw/view?usp=sharing" },
+  { id: "b-homex1",   title: "HomeX (1)",              category: "Business Videos",  url: "https://drive.google.com/file/d/1viEgWqE_loaaKPGTD0b7G2MA67tekWum/view?usp=sharing" },
+  { id: "b-homex2",   title: "HomeX (2)",              category: "Business Videos",  url: "https://drive.google.com/file/d/1eCWyF1F7g0KaWajikru7XHpQBtNOWWdj/view?usp=sharing" },
+  { id: "b-homex3",   title: "HomeX (3)",              category: "Business Videos",  url: "https://drive.google.com/file/d/17HKHrkWo5FbN_EM1-LjxPK1NppaPhUzQ/view?usp=sharing" },
+  { id: "b-jdm",      title: "JDM",                    category: "Business Videos",  url: "https://drive.google.com/file/d/16vwbof85Z6nKubs5DDSMh44-lYv19M9X/view?usp=sharing" },
+  { id: "b-kl",       title: "KL",                     category: "Business Videos",  url: "https://drive.google.com/file/d/1Vo17Fq_-rRDY9KVIvKkW2-1J4-uOfzjs/view?usp=sharing" },
+  { id: "b-lugos",    title: "Lugos",                  category: "Business Videos",  url: "https://drive.google.com/file/d/1FHHqzpVCDm6RaEfCg-_yBf2-0kh79kXX/view?usp=sharing" },
+  { id: "b-lugos1",   title: "Lugos (1)",              category: "Business Videos",  url: "https://drive.google.com/file/d/1973sgn8XI-5vB-S914hw1b0Rnc_QGpml/view?usp=sharing" },
+  { id: "b-primary",  title: "Primary",                category: "Business Videos",  url: "https://drive.google.com/file/d/18HisolNQNxHYEIWbC-wQUfDXFosPUWUh/view?usp=sharing" },
+  { id: "b-recolor",  title: "Re-Color",               category: "Business Videos",  url: "https://drive.google.com/file/d/1oT3HotNqLLIWLrqM4B8pw0z8ZsW9IO8V/view?usp=sharing" },
 
   // ── Creative Projects ──────────────────────────────────────────
-  { id: "c-co",       title: "CO",                     category: "Creative Projects", file: "CO.mp4",                              videoBase: "/capture-videos/" },
-  { id: "c-flight",   title: "FLIGHT",                 category: "Creative Projects", file: "FLIGHT.mp4",                          videoBase: "/capture-videos/" },
-  { id: "c-kadrian",  title: "Kelly Adrian Interview", category: "Creative Projects", file: "Kelly Adrian Interview.h264.mp4",     videoBase: "/capture-videos/", poster: "/capture-thumbnails/kelly-adrian-interview.png" },
-  { id: "c-kdalton",  title: "Kelly Dalton Interview", category: "Creative Projects", file: "Kelly Dalton Interview.h264.mp4",     videoBase: "/capture-videos/", poster: "/capture-thumbnails/kelly-dalton-interview.png" },
-  { id: "c-kstage",   title: "Kelly Stage Talk",       category: "Creative Projects", file: "Kelly Stage Talk.h264.mp4",           videoBase: "/capture-videos/" },
-  { id: "c-ksummit",  title: "Kelly Summit Hype",      category: "Creative Projects", file: "Kelly Summit Hype.h264.mp4",          videoBase: "/capture-videos/" },
-  { id: "c-ky",       title: "KY",                     category: "Creative Projects", file: "ky.mp4",                              videoBase: "/capture-videos/" },
-  { id: "c-thai",     title: "Thai",                   category: "Creative Projects", file: "thai.mp4",                            videoBase: "/capture-videos/" },
-  { id: "c-tourney",  title: "Tourney",                category: "Creative Projects", file: "tourney.mp4",                         videoBase: "/capture-videos/" },
-  { id: "c-wedding",  title: "Wedding",                category: "Creative Projects", file: "wedding.mp4",                         videoBase: "/capture-videos/" },
+  { id: "c-co",       title: "CO",                     category: "Creative Projects", url: "https://drive.google.com/file/d/1UG9hWk65GzHkK4L2Uq9NM2dYAC-jZIqo/view?usp=sharing" },
+  { id: "c-flight",   title: "FLIGHT",                 category: "Creative Projects", url: "https://drive.google.com/file/d/10_K_41nk2aiibkHyG--fOT5teMMhEhdy/view?usp=sharing" },
+  { id: "c-kadrian",  title: "Kelly Adrian Interview", category: "Creative Projects", url: "https://drive.google.com/file/d/1FvnwdTU8mnVNPs5ukE9fSM1HUF0KeO1z/view?usp=sharing", poster: "/capture-thumbnails/kelly-adrian-interview.png" },
+  { id: "c-kdalton",  title: "Kelly Dalton Interview", category: "Creative Projects", url: "https://drive.google.com/file/d/1DFZPtoA496eJW-XDopy1sAxzXgoXmpqh/view?usp=sharing", poster: "/capture-thumbnails/kelly-dalton-interview.png" },
+  { id: "c-kstage",   title: "Kelly Stage Talk",       category: "Creative Projects", url: "https://drive.google.com/file/d/1RcZdX0H_H2gYLzrbRNnqzHRw7kll2frv/view?usp=sharing" },
+  { id: "c-ksummit",  title: "Kelly Summit Hype",      category: "Creative Projects", url: "https://drive.google.com/file/d/1aWx08QMzpb9p4sq0vMyrHUwZ4WXst_Ho/view?usp=sharing" },
+  { id: "c-ky",       title: "KY",                     category: "Creative Projects", url: "https://drive.google.com/file/d/11cJKXokE7jXimQhQTyBIgOZ07SiSS4Fa/view?usp=sharing" },
+  { id: "c-thai",     title: "Thai",                   category: "Creative Projects", url: "https://drive.google.com/file/d/1ZshVcl_qh56VtObEhqscyvhuEwhQdlaA/view?usp=sharing" },
+  { id: "c-tourney",  title: "Tourney",                category: "Creative Projects", url: "https://drive.google.com/file/d/1U-PNexinuidbFdIynYVxQq7NE1jMhFHD/view?usp=sharing" },
+  { id: "c-wedding",  title: "Wedding",                category: "Creative Projects", url: "https://drive.google.com/file/d/1cTskHY1mahOpsixpGIn7ZEUE_LgfZxvk/view?usp=sharing" },
 ];
 
 const TAB_LABELS = ["All", "Wedding Films", "Business Videos", "Creative Projects"] as const;
 type Tab = (typeof TAB_LABELS)[number];
+
+function createFallbackPoster(label: string, category: Category) {
+  const safeLabel = label.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const safeCategory = category.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#18181b"/><stop offset="100%" stop-color="#27272a"/></linearGradient></defs><rect width="1280" height="720" fill="url(#g)"/><circle cx="640" cy="360" r="58" fill="#ffffff22" stroke="#ffffff55" stroke-width="2"/><polygon points="628,334 628,386 674,360" fill="#ffffff"/><text x="640" y="624" text-anchor="middle" fill="#f4f4f5" font-size="44" font-family="Georgia, serif">${safeLabel}</text><text x="640" y="664" text-anchor="middle" fill="#a1a1aa" font-size="26" font-family="Arial, sans-serif">${safeCategory}</text></svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
 
 // ── Video Modal ────────────────────────────────────────────────────────────────
 
@@ -70,14 +80,6 @@ interface VideoModalProps {
 }
 
 function VideoModal({ project, onClose }: VideoModalProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (project && videoRef.current) {
-      videoRef.current.load();
-    }
-  }, [project]);
-
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -113,12 +115,13 @@ function VideoModal({ project, onClose }: VideoModalProps) {
             >
               <X size={28} />
             </button>
-            <video
-              ref={videoRef}
-              controls
-              autoPlay
-              className="w-full rounded-xl shadow-2xl bg-black max-h-[80vh]"
-              src={`${project.videoBase}${encodeURIComponent(project.file)}`}
+            <iframe
+              key={project.id}
+              src={resolveDriveEmbedUrl(project.url)}
+              className="w-full h-[80vh] rounded-xl shadow-2xl bg-black"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowFullScreen
+              title={project.title}
             />
             <p className="mt-4 text-center text-white/80 text-sm tracking-wider uppercase">
               {project.title}
@@ -138,25 +141,13 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, onOpen }: ProjectCardProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
-  const [isHovering, setIsHovering] = useState(false);
-  const posterSrc = project.poster ?? thumbnail;
-
-  const captureThumbnail = (el: HTMLVideoElement) => {
-    if (thumbnail || el.videoWidth === 0 || el.videoHeight === 0) return;
-    const canvas = document.createElement("canvas");
-    canvas.width = el.videoWidth;
-    canvas.height = el.videoHeight;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    try {
-      ctx.drawImage(el, 0, 0, canvas.width, canvas.height);
-      setThumbnail(canvas.toDataURL("image/jpeg", 0.85));
-    } catch {
-      // cross-origin / HEVC — silently skip
-    }
-  };
+  const fallbackPoster = createFallbackPoster(project.title, project.category);
+  const fallbackSrc = project.poster ?? resolveDrivePosterUrl(project.url) ?? fallbackPoster;
+  const posterSrc = useVideoThumbnail({
+    videoUrl: resolveDriveMediaUrl(project.url),
+    fallbackSrc,
+    seekTime: 2,
+  }) ?? fallbackSrc;
 
   return (
     <motion.div
@@ -168,31 +159,16 @@ function ProjectCard({ project, onOpen }: ProjectCardProps) {
       className="group cursor-pointer flex flex-col gap-4"
       onClick={() => onOpen(project)}
     >
-      <div
-        className="relative aspect-video overflow-hidden rounded-lg bg-brand-black"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        {/* Video element used for thumbnail capture */}
-        <video
-          ref={videoRef}
-          muted
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity transition-transform duration-700 group-hover:scale-105"
-          onLoadedData={(e) => { e.currentTarget.currentTime = 2; }}
-          onSeeked={(e) => captureThumbnail(e.currentTarget)}
-          onPlay={(e) => { if (!isHovering) e.currentTarget.pause(); }}
-        >
-          <source src={`${project.videoBase}${encodeURIComponent(project.file)}`} type="video/mp4" />
-        </video>
-
-        {/* Static poster overlay – fades out on hover */}
+      <div className="relative aspect-video overflow-hidden rounded-lg bg-brand-black">
         {posterSrc && (
           <img
             src={posterSrc}
             alt={`${project.title} thumbnail`}
-            className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = fallbackPoster;
+            }}
           />
         )}
 
