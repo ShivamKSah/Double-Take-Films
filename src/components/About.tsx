@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
+import aidanImg from '../../aidan.png';
+
 
 export function About() {
   const ref = useRef<HTMLDivElement>(null);
@@ -22,7 +24,7 @@ export function About() {
             <img 
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
               alt="Portrait of Aidan Kramer looking thoughtful" 
-              src="/videos/aidan.png"
+              src={aidanImg}
             />
           </div>
         </motion.div>

@@ -20,13 +20,15 @@ interface Project {
 }
 
 const projects: Project[] = [
-  { id: "w-hw", title: "H&W Wedding", category: "All", url: "/videos/H&W.mp4" },
-  { id: "w-jk", title: "J&K Wedding", category: "All", url: "/videos/J&K.mp4" },
-  { id: "w-lover", title: "Lover Wedding Short", category: "All", url: "/videos/Lover.mp4" },
-  { id: "w-pollard", title: "Pollard Wedding", category: "All", url: "/videos/pollard.mp4" },
-  { id: "w-the", title: "The Wedding", category: "All", url: "/videos/THE.mp4" },
-  { id: "w-wedding", title: "Wedding Short", category: "All", url: "/videos/wedding.mp4" },
-  { id: "c-timeline", title: "Timeline Short", category: "All", url: "/videos/Timeline.mp4" },
+  { id: "harrell", title: "Harrell", category: "All", url: "https://youtu.be/mLlJtvsjoYE" },
+  { id: "pollard", title: "Pollard", category: "All", url: "https://youtu.be/H2e0wALGZww" },
+  { id: "ja-wedding", title: "J&A Wedding", category: "All", url: "https://youtu.be/Hm7h8ZWXT3U" },
+  { id: "lover", title: "Lover", category: "All", url: "https://youtu.be/8TRii0tnQTw" },
+  { id: "the", title: "THE", category: "All", url: "https://youtu.be/krmSHGKyClg" },
+  { id: "hw", title: "H&W", category: "All", url: "https://youtu.be/CnlNrk7XyHk" },
+  { id: "eakins", title: "Eakins", category: "All", url: "https://youtu.be/gjlYsvXzfBo" },
+  { id: "wedding", title: "Wedding", category: "All", url: "https://youtu.be/3Or-gYGyMHA" },
+  { id: "jk", title: "J&K", category: "All", url: "https://youtube.com/shorts/oW17iVEF_8k?feature=share" },
 ];
 
 const TAB_LABELS = ["All"] as const;
@@ -55,6 +57,13 @@ function VideoModal({ project, onClose }: VideoModalProps) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
+  // Helper to get YouTube embed URL with autoplay
+  function getYouTubeEmbed(url: string) {
+    const match = url.match(/(?:youtu.be\/|youtube.com\/(?:watch\?v=|shorts\/|embed\/))([\w-]{11})/);
+    const id = match ? match[1] : null;
+    if (!id) return null;
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=1&modestbranding=1&showinfo=0`;
+  }
   return (
     <AnimatePresence>
       {project && (
@@ -82,14 +91,18 @@ function VideoModal({ project, onClose }: VideoModalProps) {
             >
               <X size={28} />
             </button>
-            <iframe
-              key={project.id}
-              src={resolveDriveEmbedUrl(project.url)}
-              className="w-full h-[80vh] rounded-xl shadow-2xl bg-black"
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
-              title={project.title}
-            />
+            {getYouTubeEmbed(project.url) ? (
+              <iframe
+                key={project.id}
+                src={getYouTubeEmbed(project.url)}
+                className="w-full h-[80vh] rounded-xl shadow-2xl bg-black"
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+                title={project.title}
+              />
+            ) : (
+              <div className="w-full h-[80vh] flex items-center justify-center bg-black text-white">Invalid video link</div>
+            )}
             <p className="mt-4 text-center text-white/80 text-sm tracking-wider uppercase">
               {project.title}
             </p>
@@ -108,13 +121,16 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, onOpen }: ProjectCardProps) {
-  const fallbackPoster = createFallbackPoster(project.title, project.category);
-  const fallbackSrc = project.poster ?? resolveDrivePosterUrl(project.url) ?? fallbackPoster;
-  const posterSrc = useVideoThumbnail({
-    videoUrl: resolveDriveMediaUrl(project.url),
-    fallbackSrc,
-    seekTime: 2,
-  }) ?? fallbackSrc;
+  // Helper to extract YouTube video ID
+  function getYouTubeId(url: string) {
+    const match = url.match(/(?:youtu.be\/|youtube.com\/(?:watch\?v=|shorts\/|embed\/))([\w-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  const youtubeId = getYouTubeId(project.url);
+  const youtubeThumbnail = youtubeId
+    ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+    : undefined;
 
   return (
     <motion.div
@@ -127,15 +143,11 @@ function ProjectCard({ project, onOpen }: ProjectCardProps) {
       onClick={() => onOpen(project)}
     >
       <div className="relative aspect-video overflow-hidden rounded-lg bg-brand-black">
-        {posterSrc && (
+        {youtubeThumbnail && (
           <img
-            src={posterSrc}
+            src={youtubeThumbnail}
             alt={`${project.title} thumbnail`}
             className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = fallbackPoster;
-            }}
           />
         )}
 

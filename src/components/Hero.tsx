@@ -20,16 +20,26 @@ export function Hero() {
         }}
       >
         <div className="absolute inset-0 bg-black/40 z-10" />
-        <video
-          className="w-full h-full object-cover animate-[pulse_10s_ease-in-out_infinite_alternate]"
-            src="/videos/THE.mp4"
-          preload="auto"
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{ objectFit: "cover", width: "100%", height: "100%" }}
-        />
+        <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ position: 'relative' }}>
+          <iframe
+            className="animate-[pulse_10s_ease-in-out_infinite_alternate]"
+            src="https://www.youtube-nocookie.com/embed/krmSHGKyClg?autoplay=1&mute=1&loop=1&playlist=krmSHGKyClg&controls=0&modestbranding=1"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '120%',
+              height: '120%',
+              minWidth: '100%',
+              minHeight: '100%',
+              transform: 'translate(-50%, -50%)',
+              border: 0
+            }}
+            title="THE Showreel"
+          />
+        </div>
       </motion.div>
 
       <div className="relative z-20 container mx-auto px-6 text-center flex flex-col items-center">

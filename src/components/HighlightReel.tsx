@@ -1,4 +1,4 @@
-
+  
 import { motion } from "motion/react";
 
 export function HighlightReel() {
@@ -16,16 +16,13 @@ export function HighlightReel() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-2xl"
         >
-          <video
-            src="/videos/wedding.mp4"
-            title="Showreel"
+          <iframe
+            src="https://www.youtube.com/embed/3Or-gYGyMHA?autoplay=1&mute=1&loop=1&playlist=3Or-gYGyMHA&controls=1&modestbranding=1&showinfo=0"
+            title="Wedding Highlight Reel"
             className="w-full h-full"
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls
-            poster="/brand-thumbnails/wedding.jpg"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            style={{ border: 0 }}
           />
         </motion.div>
         <div className="mt-4 text-center text-sm text-white/70">
