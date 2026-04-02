@@ -19,17 +19,17 @@ interface Project {
 }
 
 const projects: Project[] = [
-  { id: "nixrprmuceq", category: "All", url: "https://youtu.be/nIxrprmuCeQ?si=nW4QX1iPVQ_NliZN" },
-  { id: "pdvhvgo2dy", category: "All", url: "https://youtu.be/pdvhVgo-2DY?si=NfVmtByecNTPHL-z" },
-  { id: "kr1vw5hjao", category: "All", url: "https://youtu.be/kR1vW5hJaoI?si=RmDx9-UfBke6yPoZ" },
-  { id: "cltiwz_u0xw", category: "All", url: "https://youtu.be/zBdqlUPKJ-o?si=OYoiWHViWF6RAZlQ" },
-  { id: "yntxzcpdtu0a", category: "All", url: "https://youtu.be/yNTxZcpDTu0?si=GyRi4LwvBVGgGDMF" },
-  { id: "c_6yfief58g", category: "All", url: "https://youtu.be/c_6YFieF58g?si=gxa2W41WkuQ5A8Z-" },
-  { id: "9q_nlfbzc2g", category: "All", url: "https://youtu.be/9Q_NlFbZC2g?si=6OjfWHyZ-lfjIPFD" },
-  { id: "ibk4hojlagm", category: "All", url: "https://youtu.be/IBk4HoJlaGM?si=6yv3r3fN1z-C0yvH" },
-  { id: "qvbscf02pkq", category: "All", url: "https://youtu.be/qVbScf02PKQ?si=pWoExuCTqi4seGcW" },
-  { id: "zqgpvpzr62i", category: "All", url: "https://youtu.be/ZQGPVpZR62I?si=_2MUxKDJmHoE17Uk" },
-  { id: "5fohhhpq9u", category: "All", url: "https://youtu.be/5FOHHHPQ9-U?si=_cWdn0wo3765rnaR" },
+  { id: "nixrprmuceq", url: "https://youtu.be/nIxrprmuCeQ?si=nW4QX1iPVQ_NliZN" },
+  { id: "pdvhvgo2dy", url: "https://youtu.be/pdvhVgo-2DY?si=NfVmtByecNTPHL-z" },
+  { id: "kr1vw5hjao", url: "https://youtu.be/kR1vW5hJaoI?si=RmDx9-UfBke6yPoZ" },
+  { id: "cltiwz_u0xw", url: "https://youtu.be/zBdqlUPKJ-o?si=OYoiWHViWF6RAZlQ" },
+  { id: "yntxzcpdtu0a", url: "https://youtu.be/yNTxZcpDTu0?si=GyRi4LwvBVGgGDMF" },
+  { id: "c_6yfief58g", url: "https://youtu.be/c_6YFieF58g?si=gxa2W41WkuQ5A8Z-" },
+  { id: "9q_nlfbzc2g", url: "https://youtu.be/9Q_NlFbZC2g?si=6OjfWHyZ-lfjIPFD" },
+  { id: "ibk4hojlagm", url: "https://youtu.be/IBk4HoJlaGM?si=6yv3r3fN1z-C0yvH" },
+  { id: "qvbscf02pkq", url: "https://youtu.be/qVbScf02PKQ?si=pWoExuCTqi4seGcW" },
+  { id: "zqgpvpzr62i", url: "https://youtu.be/ZQGPVpZR62I?si=_2MUxKDJmHoE17Uk" },
+  { id: "5fohhhpq9u", url: "https://youtu.be/5FOHHHPQ9-U?si=_cWdn0wo3765rnaR" },
 ];
 
 const TAB_LABELS = ["All"] as const;

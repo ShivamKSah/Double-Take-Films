@@ -32,7 +32,7 @@ export function Footer() {
             <h4 className="text-xs uppercase tracking-widest text-white/50 mb-2">Connect</h4>
             <div className="flex items-center gap-4">
               <a
-                href="https://instagram.com/aidan_kramer_films"
+                href="https://instagram.com/doubletakefilms_"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
@@ -41,12 +41,12 @@ export function Footer() {
                 <Instagram size={18} />
               </a>
               <a
-                href="https://instagram.com/aidan_kramer_films"
+                href="https://instagram.com/doubletakefilms_"
                 target="_blank"
                 rel="noreferrer"
                 className="text-sm text-white/70 hover:text-white transition-colors"
               >
-                @aidan_kramer_films
+                @doubletakefilms_
               </a>
             </div>
           </div>

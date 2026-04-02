@@ -78,8 +78,8 @@ export function Contact() {
               <a href="tel:+18632896311" className="text-lg font-light text-white/70 hover:text-white transition-colors w-fit">
                 +1 (863) 289-6311
               </a>
-              <a href="https://instagram.com/aidan_kramer_films" target="_blank" rel="noreferrer" className="text-sm uppercase tracking-widest text-white/60 hover:text-white transition-colors w-fit">
-                @aidan_kramer_films
+              <a href="https://instagram.com/doubletakefilms_" target="_blank" rel="noreferrer" className="text-sm uppercase tracking-widest text-white/60 hover:text-white transition-colors w-fit">
+                 @doubletakefilms_
               </a>
             </div>
           </motion.div>
