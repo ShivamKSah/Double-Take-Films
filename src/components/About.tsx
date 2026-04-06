@@ -38,9 +38,13 @@ export function About() {
           <span className="text-accent-green font-bold tracking-[0.3em] uppercase text-xs mb-4 block">The Filmmaker</span>
           <h2 className="font-serif text-4xl md:text-5xl text-white mb-8">Aidan Kramer</h2>
           <div className="space-y-6 text-slate-300 font-light leading-relaxed text-lg">
-            <p>I believe every moment has a heartbeat. My mission is to find that pulse and capture it in its most beautiful form.</p>
-            <p>Capturing moments professionally since 2024, I've transitioned from capturing simple movements to choreographing emotions through light, sound, and sequence. Double Take Films isn't just about recording—it's about making you look twice.</p>
-            <p className="font-serif italic text-white text-xl">"Cinematography is the bridge between what is seen and what is felt."</p>
+            <p>I believe film should make you feel something, not just look good.</p>
+            <p>Somewhere along the way, a lot of video got safe. Predictable. The same shots, the same pacing, the same polished but forgettable style. That’s not what I’m here to do.</p>
+            <p>I got into this because I wanted to make things that actually hit.. films that feel alive, that people want to watch more than once, that don’t just document a moment but bring it back to life.</p>
+            <p>Since starting Double Take Films, I’ve focused on keeping that energy in everything I shoot. Whether it’s a wedding, a brand, or a story that matters to you, I’m always chasing movement, emotion, and moments that feel real—not staged, not forced.</p>
+            <p>At the end of the day, I don’t care about making something that looks like everyone else’s work.</p>
+            <p>I care about making something you feel.</p>
+            <p className="font-serif italic text-white text-xl">“Good films are seen. Great films are felt.”</p>
           </div>
           <div className="mt-10 flex gap-6 grayscale opacity-50">
              {/* Note: The user's snippet ended here abruptly, probably meant for social icons or similar. Adding a placeholder or leaving it empty as per snippet */}

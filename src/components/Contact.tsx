@@ -36,18 +36,12 @@ export function Contact() {
     const eventDate = String(formData.get("eventDate") ?? "");
     const message = String(formData.get("message") ?? "");
 
-    const whatsappText = [
-      "Hi Aidan, I am interested in working with Double Take Films.",
-      "",
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Event Type: ${eventType}`,
-      `Event Date: ${eventDate}`,
-      `Message: ${message}`,
-    ].join("\n");
-
-    const whatsappUrl = `https://wa.me/18632896311?text=${encodeURIComponent(whatsappText)}`;
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=aidank0125@gmail.com&su=${encodeURIComponent(
+      `New Inquiry from ${name}`
+    )}&body=${encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\nEvent Type: ${eventType}\nEvent Date: ${eventDate}\nMessage: ${message}`
+    )}`;
+    window.open(gmailUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -197,7 +191,7 @@ export function Contact() {
                 type="submit"
                 className="group flex items-center justify-center gap-3 bg-white text-black px-8 py-4 rounded-full font-medium tracking-wide uppercase text-sm transition-all mt-4 w-full md:w-auto self-start hover:bg-white/90"
               >
-                Send on WhatsApp
+                Send Inquiry
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </button>
             </form>
