@@ -7,7 +7,7 @@ export function HighlightReel() {
 
 
   return (
-    <section className="py-16 md:py-20 bg-brand-gray text-white">
+    <section className="py-8 md:py-12 bg-brand-gray text-white">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

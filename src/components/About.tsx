@@ -8,7 +8,7 @@ export function About() {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="about" className="py-20 md:py-28 flex items-center bg-slate-900/30 border-y border-white/5">
+    <section id="about" className="py-12 md:py-16 flex items-center bg-slate-900/30 border-y border-white/5">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center w-full">
         <motion.div
            ref={ref}

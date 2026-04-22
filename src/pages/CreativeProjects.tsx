@@ -219,7 +219,7 @@ export default function CreativeProjects() {
         </div>
       </div>
 
-      <section className="pt-24 pb-16 container mx-auto px-6 md:px-12">
+      <section className="pt-12 pb-8 container mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -235,7 +235,7 @@ export default function CreativeProjects() {
         </motion.div>
       </section>
 
-      <section className="container mx-auto px-6 md:px-12 pb-32">
+      <section className="container mx-auto px-6 md:px-12 pb-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {videos.map((video, index) => (
             <VideoCard

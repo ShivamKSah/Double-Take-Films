@@ -182,7 +182,7 @@ export function Portfolio() {
   const visibleProjects = filtered;
 
   return (
-    <section id="portfolio" className="py-32 bg-brand-gray text-white">
+    <section id="portfolio" className="py-16 bg-brand-gray text-white">
       <div className="container mx-auto px-6 md:px-12">
         {/* Header row */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">

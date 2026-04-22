@@ -26,7 +26,7 @@ const categories = [
 export function FeaturedWork() {
   // navigation removed, cards are static
   return (
-    <section id="work" className="py-24 md:py-28 bg-brand-black text-white">
+    <section id="work" className="py-12 md:py-16 bg-brand-black text-white">
       <div className="container mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <motion.div

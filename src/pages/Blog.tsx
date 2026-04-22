@@ -12,7 +12,7 @@ const blogPosts = [
 
 export default function Blog() {
   return (
-    <section className="py-24 md:py-32 bg-brand-light-gray min-h-[60vh]">
+    <section className="py-12 md:py-16 bg-brand-light-gray min-h-[60vh]">
       <div className="container mx-auto px-6 md:px-12">
         <h2 className="text-4xl font-serif mb-8 text-brand-black">Blog</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
