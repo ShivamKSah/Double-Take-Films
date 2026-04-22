@@ -24,10 +24,10 @@ const projects: Project[] = [
   { id: "kr1vw5hjao", url: "https://youtu.be/kR1vW5hJaoI?si=RmDx9-UfBke6yPoZ" },
   { id: "cltiwz_u0xw", url: "https://youtu.be/zBdqlUPKJ-o?si=OYoiWHViWF6RAZlQ" },
   { id: "yntxzcpdtu0a", url: "https://youtu.be/yNTxZcpDTu0?si=GyRi4LwvBVGgGDMF" },
-  { id: "c_6yfief58g", url: "https://youtu.be/c_6YFieF58g?si=gxa2W41WkuQ5A8Z-" },
-  { id: "9q_nlfbzc2g", url: "https://youtu.be/9Q_NlFbZC2g?si=6OjfWHyZ-lfjIPFD" },
+  { id: "c_6yfief58g", url: "https://youtu.be/EdlBRab60-I?si=jrd1QN_woIrB4VWv" },
+  { id: "9q_nlfbzc2g", url: "https://youtu.be/-H5BVMOyyeI?si=U4i7v9UzNtwBCR6D" },
   { id: "ibk4hojlagm", url: "https://youtu.be/IBk4HoJlaGM?si=6yv3r3fN1z-C0yvH" },
-  { id: "qvbscf02pkq", url: "https://youtu.be/qVbScf02PKQ?si=pWoExuCTqi4seGcW" },
+  { id: "qvbscf02pkq", url: "https://youtu.be/mD5_5ieRrQ4?si=Yltve3gtIAepH1AM" },
   { id: "zqgpvpzr62i", url: "https://youtu.be/ZQGPVpZR62I?si=_2MUxKDJmHoE17Uk" },
 ];
 
@@ -210,17 +210,7 @@ export function Portfolio() {
           ))}
         </motion.div>
 
-        {activeTab === "All" && filtered.length > initialAllCount && (
-          <div className="mt-10 flex justify-center">
-            <button
-              type="button"
-              onClick={() => setShowAllInAllTab((prev) => !prev)}
-              className="px-6 py-2 rounded-full text-sm uppercase tracking-wider border border-white/20 text-white/70 hover:text-white hover:border-white/50 transition-all duration-300"
-            >
-              {showAllInAllTab ? "View Less" : "View More"}
-            </button>
-          </div>
-        )}
+        {/* View More/View Less button removed as requested */}
       </div>
 
       {/* Modal */}

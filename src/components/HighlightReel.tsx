@@ -7,7 +7,7 @@ export function HighlightReel() {
 
 
   return (
-    <section className="py-24 bg-brand-gray text-white">
+    <section className="py-16 md:py-20 bg-brand-gray text-white">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -25,7 +25,7 @@ export function HighlightReel() {
             style={{ border: 0 }}
           />
         </motion.div>
-        <div className="mt-4 text-center text-sm text-white/70">
+        <div className="mt-3 text-center text-sm text-white/70">
           Wedding Highlight Reel
         </div>
       </div>

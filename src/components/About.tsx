@@ -8,7 +8,7 @@ export function About() {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="about" className="py-32 md:py-48 flex items-center min-h-[80vh] bg-slate-900/30 border-y border-white/5">
+    <section id="about" className="py-20 md:py-28 flex items-center bg-slate-900/30 border-y border-white/5">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center w-full">
         <motion.div
            ref={ref}
@@ -46,7 +46,7 @@ export function About() {
             <p>I care about making something you feel.</p>
             <p className="font-serif italic text-white text-xl">“Good films are seen. Great films are felt.”</p>
           </div>
-          <div className="mt-10 flex gap-6 grayscale opacity-50">
+          <div className="mt-6 flex gap-6 grayscale opacity-50">
              {/* Note: The user's snippet ended here abruptly, probably meant for social icons or similar. Adding a placeholder or leaving it empty as per snippet */}
           </div>
         </motion.div>

@@ -12,6 +12,7 @@ import { Footer } from "./components/Footer";
 import WeddingFilms from "./pages/WeddingFilms";
 import BrandVideos from "./pages/BrandVideos";
 import CreativeProjects from "./pages/CreativeProjects";
+import Blog from "./pages/Blog";
 
 function Home() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/wedding-films" element={<WeddingFilms />} />
         <Route path="/brand-videos" element={<BrandVideos />} />
         <Route path="/creative-projects" element={<CreativeProjects />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
     </BrowserRouter>
   );

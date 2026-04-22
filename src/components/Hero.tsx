@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import bggImage from "../bgg.png";
 
 export function Hero() {
   const { scrollY } = useScroll();
@@ -19,25 +18,27 @@ export function Hero() {
           transformOrigin: "center top"
         }}
       >
-        <div className="absolute inset-0 bg-black/40 z-10" />
+        {/* Removed blur/overlay for maximum video clarity */}
         <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ position: 'relative' }}>
           <iframe
-            className="animate-[pulse_10s_ease-in-out_infinite_alternate]"
-            src="https://www.youtube-nocookie.com/embed/IBk4HoJlaGM?autoplay=1&mute=1&loop=1&playlist=IBk4HoJlaGM&controls=0&modestbranding=1&vq=hd1080"
+            src="https://www.youtube-nocookie.com/embed/b1ArYI6porI?autoplay=1&mute=1&loop=1&playlist=b1ArYI6porI&controls=0&modestbranding=1&playsinline=1&rel=0"
             allow="autoplay; encrypted-media"
             allowFullScreen
             style={{
               position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '120%',
-              height: '120%',
-              minWidth: '100%',
-              minHeight: '100%',
-              transform: 'translate(-50%, -50%)',
-              border: 0
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              minWidth: '100vw',
+              minHeight: '100vh',
+              objectFit: 'cover',
+              border: 0,
+              zIndex: 0,
+              pointerEvents: 'none'
             }}
-            title="THE Showreel"
+            title="Hero Background Video"
+            frameBorder="0"
           />
         </div>
       </motion.div>
