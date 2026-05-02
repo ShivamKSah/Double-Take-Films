@@ -36,12 +36,12 @@ export function Contact() {
     const eventDate = String(formData.get("eventDate") ?? "");
     const message = String(formData.get("message") ?? "");
 
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=aidank0125@gmail.com&su=${encodeURIComponent(
+    const mailtoUrl = `mailto:aidank0125@gmail.com?subject=${encodeURIComponent(
       `New Inquiry from ${name}`
     )}&body=${encodeURIComponent(
       `Name: ${name}\nEmail: ${email}\nEvent Type: ${eventType}\nEvent Date: ${eventDate}\nMessage: ${message}`
     )}`;
-    window.open(gmailUrl, "_blank", "noopener,noreferrer");
+    window.location.href = mailtoUrl;
   };
 
   return (
