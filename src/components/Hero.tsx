@@ -20,26 +20,32 @@ export function Hero() {
       >
         {/* Removed blur/overlay for maximum video clarity */}
         <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ position: 'relative' }}>
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/b1ArYI6porI?autoplay=1&mute=1&loop=1&playlist=b1ArYI6porI&controls=0&modestbranding=1&playsinline=1&rel=0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
             style={{
               position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              minWidth: '100vw',
-              minHeight: '100vh',
-              objectFit: 'cover',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%',
+              height: '100%',
+              maxWidth: '100vw',
+              maxHeight: '100vh',
               border: 0,
               zIndex: 0,
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              background: 'black',
+              objectFit: 'contain'
             }}
-            title="Hero Background Video"
-            frameBorder="0"
-          />
+            aria-hidden="true"
+            poster="/Hero-poster.jpg"
+          >
+            <source src="/Hero.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </motion.div>
 
