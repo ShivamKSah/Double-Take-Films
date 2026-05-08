@@ -13,7 +13,7 @@ export function Footer() {
               Double Take Films
             </a>
             <p className="text-white/50 font-light leading-relaxed max-w-sm">
-              Cinematic storytelling for weddings, brands, and unforgettable moments. Based in Los Angeles, available worldwide.
+              Cinematic storytelling for weddings, brands, and unforgettable moments. Based in Florida, available worldwide.
             </p>
           </div>
 
