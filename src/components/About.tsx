@@ -11,24 +11,24 @@ export function About() {
     <section id="about" className="py-12 md:py-16 flex items-center bg-slate-900/30 border-y border-white/5">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center w-full">
         <motion.div
-           ref={ref}
-           initial={{ opacity: 0, x: -50 }}
-           whileInView={{ opacity: 1, x: 0 }}
-           viewport={{ once: true, margin: "-100px" }}
-           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-           className="relative"
+          ref={ref}
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative"
         >
           <div className="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-accent-blue z-0"></div>
           <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-accent-green z-0"></div>
           <div className="relative z-10 overflow-hidden aspect-[4/5] w-full">
-            <img 
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
-              alt="Portrait of Aidan Kramer looking thoughtful" 
+            <img
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+              alt="Portrait of Aidan Kramer looking thoughtful"
               src={aidanImg}
             />
           </div>
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -47,7 +47,7 @@ export function About() {
             <p className="font-serif italic text-white text-xl">“Good films are seen. Great films are felt.”</p>
           </div>
           <div className="mt-6 flex gap-6 grayscale opacity-50">
-             {/* Note: The user's snippet ended here abruptly, probably meant for social icons or similar. Adding a placeholder or leaving it empty as per snippet */}
+            {/* Note: The user's snippet ended here abruptly, probably meant for social icons or similar. Adding a placeholder or leaving it empty as per snippet */}
           </div>
         </motion.div>
       </div>

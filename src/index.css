@@ -11,7 +11,7 @@
   --color-brand-green: #2E7D32;
   --color-brand-gray: #111111;
   --color-brand-light-gray: #F5F5F5;
-  
+
   --color-accent-blue: #3B82F6;
   --color-accent-green: #10B981;
 }
@@ -20,11 +20,17 @@
   html {
     scroll-behavior: smooth;
   }
+
   body {
     @apply bg-brand-black text-brand-white font-sans antialiased selection:bg-brand-white selection:text-brand-black;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif font-normal tracking-tight;
   }
 }
@@ -33,6 +39,7 @@
   .glass {
     @apply bg-black/30 backdrop-blur-md;
   }
+
   .text-balance {
     text-wrap: balance;
   }

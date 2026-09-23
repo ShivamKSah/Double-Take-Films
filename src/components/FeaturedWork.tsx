@@ -41,7 +41,7 @@ export function FeaturedWork() {
               Stories told with warmth, heart, and meaning.
             </h3>
           </motion.div>
-          
+
           <motion.a
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -73,7 +73,7 @@ export function FeaturedWork() {
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
-                
+
                 {/* Hover Play Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <div className="w-16 h-16 rounded-full glass flex items-center justify-center text-white">
@@ -83,7 +83,7 @@ export function FeaturedWork() {
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <div className="flex items-center gap-2">
                   <h4 className="text-2xl font-serif mb-2 group-hover:text-white/80 transition-colors">{category.title}</h4>

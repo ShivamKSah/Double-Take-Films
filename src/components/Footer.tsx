@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="bg-brand-black text-white pt-24 pb-12 border-t border-white/10">
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-24 mb-16">
-          
+
           {/* Logo & Info */}
           <div className="md:col-span-2 flex flex-col gap-6">
             <a href="#home" className="text-2xl font-serif tracking-wider uppercase">
@@ -50,7 +50,7 @@ export function Footer() {
               </a>
             </div>
           </div>
-          
+
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">

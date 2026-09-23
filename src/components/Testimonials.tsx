@@ -79,7 +79,7 @@ export function Testimonials() {
           ))}
         </div>
       </div>
-      
+
       {/* Background Elements */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-brand-blue/10 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
       <div className="absolute top-1/2 right-0 w-96 h-96 bg-brand-green/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />

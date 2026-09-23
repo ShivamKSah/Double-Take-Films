@@ -1,21 +1,15 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, Fragment } from "react";
 import { X } from "lucide-react";
-import { cn } from "../lib/utils";
-import {
-  resolveDriveEmbedUrl,
-  resolveDriveMediaUrl,
-  resolveDrivePosterUrl,
-  useVideoThumbnail,
-} from "../lib/videoThumbnails";
 
 type Category = "All";
 
 interface Project {
   id: string;
-  category: Category;
+  category?: Category;
   url: string;
   poster?: string;
+  title?: string;
 }
 
 const projects: Project[] = [
@@ -30,16 +24,6 @@ const projects: Project[] = [
   { id: "qvbscf02pkq", url: "https://youtu.be/mD5_5ieRrQ4?si=Yltve3gtIAepH1AM" },
   { id: "zqgpvpzr62i", url: "https://youtu.be/ZQGPVpZR62I?si=_2MUxKDJmHoE17Uk" },
 ];
-
-const TAB_LABELS = ["All"] as const;
-type Tab = (typeof TAB_LABELS)[number];
-
-function createFallbackPoster(label: string, category: Category) {
-  const safeLabel = label.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const safeCategory = category.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#18181b"/><stop offset="100%" stop-color="#27272a"/></linearGradient></defs><rect width="1280" height="720" fill="url(#g)"/><circle cx="640" cy="360" r="58" fill="#ffffff22" stroke="#ffffff55" stroke-width="2"/><polygon points="628,334 628,386 674,360" fill="#ffffff"/><text x="640" y="624" text-anchor="middle" fill="#f4f4f5" font-size="44" font-family="Georgia, serif">${safeLabel}</text><text x="640" y="664" text-anchor="middle" fill="#a1a1aa" font-size="26" font-family="Arial, sans-serif">${safeCategory}</text></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
 
 // ── Video Modal ────────────────────────────────────────────────────────────────
 
@@ -173,13 +157,8 @@ function ProjectCard({ project, onOpen }: ProjectCardProps) {
 // ── Main Export ────────────────────────────────────────────────────────────────
 
 export function Portfolio() {
-  const [activeTab, setActiveTab] = useState<Tab>("All");
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [showAllInAllTab, setShowAllInAllTab] = useState(false);
-  const initialAllCount = 9;
-
-  const filtered = projects;
-  const visibleProjects = filtered;
+  const visibleProjects = projects;
 
   return (
     <section id="portfolio" className="py-16 bg-brand-gray text-white">
