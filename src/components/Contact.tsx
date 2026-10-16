@@ -73,11 +73,11 @@ export function Contact() {
     setErrorMessage(null);
 
     const payload = {
-      name,
-      email,
-      eventType: selectedEventType,
-      eventDate: eventDate || "Flexible / To be decided",
-      message,
+      Name: name,
+      Email: email,
+      "Event Type": selectedEventType,
+      "Target Date": eventDate || "Flexible / To be decided",
+      Message: message,
       _subject: `New Inquiry from ${name} - ${selectedEventType}`,
       _replyto: email,
       _template: "table",
@@ -86,7 +86,8 @@ export function Contact() {
 
     try {
       const primaryEndpoint =
-        import.meta.env.VITE_CONTACT_ENDPOINT || "https://formsubmit.co/ajax/aidank0125@gmail.com";
+        import.meta.env.VITE_CONTACT_ENDPOINT ||
+        "https://formsubmit.co/ajax/ef6ff2667a8338b95c99b9d3f8aa3b52";
 
       let response: Response;
       let data: any = null;
