@@ -111,12 +111,48 @@ const createVideoPlugin = (routePath: string, folderName: string, pluginName: st
   },
 });
 
+const createContactApiPlugin = () => ({
+  name: 'serve-contact-api',
+  configureServer(server: any) {
+    server.middlewares.use('/api/contact', (req: any, res: any, next: any) => {
+      if (req.method === 'POST') {
+        let body = '';
+        req.on('data', (chunk: any) => {
+          body += chunk;
+        });
+        req.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            console.log('\n====================================');
+            console.log('📩 [NEW INQUIRY RECEIVED FOR ADMIN]:');
+            console.log('• Name:', data.name);
+            console.log('• Email:', data.email);
+            console.log('• Event Type:', data.eventType);
+            console.log('• Event Date:', data.eventDate);
+            console.log('• Message:', data.message);
+            console.log('====================================\n');
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, message: 'Inquiry received successfully!' }));
+          } catch (e) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: 'Invalid JSON body' }));
+          }
+        });
+        return;
+      }
+      next();
+    });
+  },
+});
+
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
     plugins: [
       react(),
       tailwindcss(),
+      createContactApiPlugin(),
       createVideoPlugin('/wedding-videos', 'DTF Wedding', 'serve-wedding-videos'),
       createVideoPlugin('/brand-videos', 'DTF Brand', 'serve-brand-videos'),
       createVideoPlugin('/capture-videos', 'DTF Captures', 'serve-capture-videos'),
